@@ -1,0 +1,22 @@
+{
+  "workbench.colorTheme": "Palenight",
+  "editor.fontSize": 20,
+  "python.languageServer": "Pylance",
+  "editor.tokenColorCustomizations": {
+    "[Palenight]": {
+      "textMateRules": [
+        {
+          "scope": [
+            "source.python keyword.control",
+            "source.python variable.parameter",
+            "entity.name.function",
+            "variable"
+          ],
+          "settings": {
+            "foreground": "#A3BE8C"
+          }
+        }
+      ]
+    }
+  }
+}
