@@ -1,6 +1,6 @@
 {
-  "workbench.colorTheme": "Palenight",
-  "editor.fontSize": 20,
+  "workbench.colorTheme": "Palenight (Mild Contrast)",
+  "editor.fontSize": 25,
   "python.languageServer": "Pylance",
   "editor.tokenColorCustomizations": {
     "[Palenight]": {
