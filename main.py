@@ -14,9 +14,10 @@ from math_tools import (
 
 import matplotlib.pyplot as plt #ใช้วาดกราฟ
 
+side,unit = 0,"เมตร"
 #ฟังชั่นตรวจสอบการป้อนค่ากากๆ
-def validate_area_input(side, unit):
-    array_units_text = []
+def validate_input(side, unit):
+    array_units_text = [] #เก็บชื่อหน่วยที่ใช้ได้
     array_units = [
         'มิลลิเมตร',
         'เซนติเมตร',
@@ -36,17 +37,19 @@ def validate_area_input(side, unit):
     if side < 0:
         return False, "มุมห้ามติดลบ"
     
-    for i in range():
+    for i in range(len(array_units)):
         array_units_text.append(array_units[i])
-
     #ตรวจว่าหน่วยอยู่ในลิสที่อนุญาตให้ใช้
     if unit not in array_units:
         return False, f"หน่วยไม่ถูกต้อง: {unit} (ใช้ได้เเค่ {', '.join(array_units)})"
+    return True, f"รับข้อมูลแล้ว: จน.มุม {side}, หน่วย {unit}"
 
-    return True, f"รับข้อมูลแล้ว: {area} {unit}"
+is_valid, message = validate_input(side, unit)
 
-is_valid, message = validate_area_input(value, unit)
 
+validate_input(-5, 'กิโลเมตร')
+
+print(message)
 #วิธีการใช้งาน + เปิดโปรเเกรม
 print("ยินดีต้อนรับสู่โปรเเกรมหาพื้นที่")
 
