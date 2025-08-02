@@ -1,7 +1,7 @@
 from utils import greet
-"""from math_tools import (
+from math_tools import ( #นำเข้าสูตรคำนวรพื้นที่ทั้งหดม
     CircleArea,
-    TriangleArea,
+    TrapezoidArea,
     EquilateralTriangleArea,
     IsoscelesTriangleArea,
     ScaleneTriangleArea,
@@ -10,85 +10,147 @@ from utils import greet
     PentagonArea,
     HexagonArea,
     add
-)"""
-
+)
 import matplotlib.pyplot as plt #ใช้วาดกราฟ
-
-side,unit = 0,"เมตร" #ค่าเริ่มต้น
 
 #ฟังชั่นตรวจสอบการป้อนค่า
 array_units = [
-    [['มิลลิเมตร'],[0.001]],  # 1 มม. = 0.001 เมตร
-    [['เซนติเมตร'],[0.01]],   # 1 ซม. = 0.01 เมตร
-    [['นิ้ว'],[0.0254]],      # 1 นิ้ว = 0.0254 เมตร
-    [['เมตร'],[1.0]],    # 1 เมตร = 1 เมตร
-    [['วา'],[2.0]],   # 1 วา = 2 เมตร
-    [['กิโลเมตร'],[1000.0]] # 1 กม. = 1000 เมตร
+    ['มิลลิเมตร',0.001],# 1 มม. = 0.001 เมตร
+    ['เซนติเมตร',0.01],   # 1 ซม. = 0.01 เมตร
+    ['นิ้ว',0.0254],# 1 นิ้ว = 0.0254 เมตร
+    ['เมตร',1.0], # 1 เมตร = 1 เมตร
+    ['วา',2.0], # 1 วา = 2 เมตร
+    ['กิโลเมตร',1000.0] # 1 กม = 1000 เมตร
 ]
 
-def validate_input(side, unit):
-    array_units_text = [] #เก็บชื่อหน่วยที่ใช้ได้
-    
-    #ตรวจว่า side เป็นตัวเลข จำนวนเต็ม
-    if side != int(side) and side != float(side):
-        return False, "ค่าที่ป้อนไม่ใช่ตัวเลข"
-    elif side == float(side):
-        return False, "ค่าที่ป้อนต้องเป็นจำนวนเต็ม"
-    elif side < 1:
-        return False, "ป้อนเป็นจำนวนเต็มบวก"
+side_many = 0 #จำนวนด้าน
+name_unit = 'ค่าเริ่มต้น' #ชื่อหน่วย
+type_shap = 'ค่าเริ่มต้น' #ชนิดของรูปทรง
+real_unit = 0 #ตัวเเปลงหน่วย เซนติเมตร 0.01
 
-    #ตรวจว่าค่ามุมไม่ติดลบ
-    if side < 0:
-        return False, "มุมห้ามติดลบ"
-    
-    for i in range(len(array_units)):
-        array_units_text.append(array_units[i])
-    #ตรวจว่าหน่วยอยู่ในลิสที่อนุญาตให้ใช้
-    if unit not in array_units:
-        return False, f"หน่วยไม่ถูกต้อง: {unit} (ใช้ได้เเค่ {', '.join(array_units)})"
-    return True, f"รับข้อมูลแล้ว: จน.มุม {side}, หน่วย {unit}"
+#ฟังชั่นเเยกว่าต้องใช้สูตรหาพื้นที่ไหน
+def choose(type_shap,name_unit):
+    if type_shap == "วงกลม":
+        while True:
+            try:
+                r = int(input("--> ป้อนรัศมี: "))
+                CircleArea(r,name_unit)
+                break
+            except ValueError:
+                print("กรุณาป้อนตัวเลขจำนวนเต็มเท่านั้น")
+    elif type_shap == "สามเหลี่ยม":
+        print("สามเหลี่ยมที่คุณต้องการคำนวณ มีลักษณะอย่างไร?")
+        print("1. ด้านทั้ง 3 ไม่เท่ากัน")
+        print("2. ด้านทั้ง 3 เท่ากัน")
+        print("3. ด้าน 2 ข้างเท่ากัน ฐานไม่เท่า")
 
-# validate_input(-5, 'กิโลเมตร')
-# is_valid, message = validate_input(side, unit)
-# print(message)
+        number_input = 0
+        while True:
+            try:
+                number_input = int(input("--> ป้อนหมายเลข: "))
 
+                if number_input == 1:
+                    print(">>> คุณเลือก: สามเหลี่ยมด้านไม่เท่า")
+                    sideA = float(input("--> ป้อนด้าน A: "))
+                    sideB = float(input("--> ป้อนด้าน B: "))
+                    sideC = float(input("--> ป้อนด้าน C: "))
+                    ScaleneTriangleArea(sideA, sideB, sideC, name_unit)
+                    break
+                elif number_input == 2:
+                    print(">>> คุณเลือก: สามเหลี่ยมด้านเท่า")
+                    side = float(input("--> ป้อนความยาวด้าน: "))
+                    EquilateralTriangleArea(side, name_unit)
+                    break
+                elif number_input == 3:
+                    print(">>> คุณเลือก: สามเหลี่ยมหน้าจั่ว")
+                    base = float(input("--> ป้อนฐาน: "))
+                    height = float(input("--> ป้อนสูง: "))
+                    IsoscelesTriangleArea(base, height, name_unit)
+                    break
+                else:
+                    print("กรุณาป้อนเฉพาะเลข 1, 2 หรือ 3 เท่านั้น")
+                    break
+            except ValueError:
+                print("กรุณาป้อนตัวเลขจำนวนเต็มเท่านั้น")
+    elif type_shap == "สี่เหลี่ยม":
+        print("ลักษณะของสี่เหลี่ยมที่คุณต้องการคำนวณคือแบบไหน?")
+        print("1. ด้านทุกด้านเท่ากัน (สี่เหลี่ยมจัตุรัส)")
+        print("2. ด้านตรงข้ามเท่ากัน (สี่เหลี่ยมผืนผ้า)")
+        print("3. มีฐานคู่ขนาน (สี่เหลี่ยมคางหมู)")
 
-# ใช้หาพื้นที่เเบบทั่วไป
+        while True:
+            try:
+                choice = int(input("--> ป้อนหมายเลข: "))
+                if choice == 1:
+                    print(">>> คุณเลือก: สี่เหลี่ยมจัตุรัส")
+                    side = float(input("--> ป้อนความยาวด้าน: "))
+                    SquareArea(side,name_unit)
+                    break
+                elif choice == 2:
+                    print(">>> คุณเลือก: สี่เหลี่ยมผืนผ้า")
+                    length = float(input("--> ป้อนความยาว: "))
+                    width = float(input("--> ป้อนความกว้าง: "))
+                    RectangleArea(length,width,name_unit)
+                    break
+                elif choice == 3:
+                    print(">>> คุณเลือก: สี่เหลี่ยมคางหมู")
+                    base1 = float(input("--> ป้อนความยาวฐานบน: "))
+                    base2 = float(input("--> ป้อนความยาวฐานล่าง: "))
+                    height = float(input("--> ป้อนความสูง: "))
+                    TrapezoidArea(base1, base2, height, name_unit)
+                    break
+                else:
+                    print("กรุณาป้อนหมายเลข 1-3 เท่านั้น")
+            except ValueError:
+                print("กรุณาป้อนตัวเลขจำนวนเต็มเท่านั้น")
+    elif type_shap == "ห้าเหลี่ยม":
+        while True:
+            try:
+                perimeter = float(input("--> ความยาวด้าน: "))
+                apothem = float(input("--> ระยะกึ่งกลาง: "))
+                PentagonArea(perimeter, apothem,name_unit)
+                break
+            except ValueError:
+                print("กรุณาป้อนเเค่ตัวเลข")
+    if type_shap == "หกเหลี่ยม":
+        while True:
+            try:
+                length = float(input("--> ความยาวด้าน: "))
+                HexagonArea(length,name_unit)
+                break
+            except ValueError:
+                print("กรุณาป้อนเเค่ตัวเลข")
+
 # ใช้หาพื้นที่เเบบทั่วไป
 def basic_area():
+    name_unit = ''
     print("เลือกหน่วยของคุณ")
     for i in range(len(array_units)):
         if i < (len(array_units)-1):
-            print(array_units[i][0][0], ",", end='')
+            print(array_units[i][0], ",", end='')
         else:
-            print(array_units[i][0][0])
-
-    name_unit = ''
+            print(array_units[i][0])
     unit_input = input("--> ป้อนหน่วยของคุณ: ")
 
     # เเปลงหน่วยไปเป็นเมตรทั้งหมด 
     for i in range(len(array_units)):
-        if unit_input == array_units[i][0][0]:
-            real_unit = array_units[i][1][0] 
-            name_unit = array_units[i][0][0] 
+        if unit_input == array_units[i][0]:
+            real_unit = array_units[i][1] 
+            name_unit = array_units[i][0] 
 
     # ตรวจสอบว่าป้อนหน่วยที่รองรับหรือไม่
     if name_unit == '':
         print("## หน่วยที่คุณป้อนไม่รองรับ ป้อนอีกครั้ง ##")
         return basic_area()
-    
     print(f'>>> คุณเลือกหน่วย ตาราง{unit_input}')
 
-    type_shap = ""
     # ฟังชั่นระบุรูปทรง
-    def what_shape(side_many):
+    def what_shape(side_many,name_unit):
         try:
             side_many = int(input("--> ป้อนจำนวนด้าน: "))
         except ValueError:
             print("กรุณาป้อนเป็นตัวเลขจำนวนเต็มเท่านั้น")
-            return what_shape(0)
-    
-        type_shap = ''
+            return what_shape(0,name_unit)
     
         if side_many == 0:
             type_shap = "วงกลม"
@@ -102,17 +164,16 @@ def basic_area():
             type_shap = "หกเหลี่ยม"
         elif side_many == 1 or side_many == 2:
             print("ไม่มีรูปทรงที่มีจำนวนด้านแค่ 1 และ 2 กรอกใหม่อีกครั้ง")
-            return what_shape(0)
+            return what_shape(0,name_unit)
         else:
             print("รองรับแค่ 0-6 ด้าน กรอกใหม่อีกครั้ง")
-            return what_shape(0)
+            return what_shape(0,name_unit)
 
         print(">>> คุณต้องการหาพื้นที่รูปทรง", type_shap)
-        return type_shap
+        return choose(type_shap,name_unit)
     
-    what_shape(0)
+    what_shape(0,name_unit)
         
-
 #วิธีการใช้งาน + เปิดโปรเเกรม
 print("ยินดีต้อนรับสู่โปรเเกรมหาพื้นที่\nหาพื้นที่เเบบไหนดี?\n1. พิกัดจุด/2. ปกติ")
 
