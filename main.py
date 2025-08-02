@@ -34,6 +34,8 @@ def validate_input(side, unit):
         return False, "ค่าที่ป้อนไม่ใช่ตัวเลข"
     elif side == float(side):
         return False, "ค่าที่ป้อนต้องเป็นจำนวนเต็ม"
+    elif side < 1:
+        return False, "ป้อนเป็นจำนวนเต็มบวก"
 
     #ตรวจว่าค่ามุมไม่ติดลบ
     if side < 0:
@@ -50,54 +52,85 @@ def validate_input(side, unit):
 # is_valid, message = validate_input(side, unit)
 # print(message)
 
-#วิธีการใช้งาน + เปิดโปรเเกรม
-print("ยินดีต้อนรับสู่โปรเเกรมหาพื้นที่\nหาพื้นที่เเบบไหนดี?\n1. พิกัดจุด/2. ปกติ")
 
-while True:
-    try:
-        type_calculator = int(input("ป้อนเลขตัวเลือก: "))
-        if type_calculator == 1:
-            print("คุณเลือกการคำนวณแบบ พิกัดจุด")
-            break
-        elif type_calculator == 2:
-            print("คุณเลือกการคำนวณแบบ ทั่วไป")
-            break
-        else:
-            print("โปรดป้อนเป็นตัวเลข 1 หรือ 2 เท่านั้น")
-    except ValueError:
-        print("กรุณาป้อนเป็นตัวเลข ไม่ใช่ตัวอักษรหรือสัญลักษณ์")
-
-
+# ใช้หาพื้นที่เเบบทั่วไป
 # ใช้หาพื้นที่เเบบทั่วไป
 def basic_area():
     print("เลือกหน่วยของคุณ")
     for i in range(len(array_units)):
         if i < (len(array_units)-1):
-            print(array_units[i][0][0],",",end='')
+            print(array_units[i][0][0], ",", end='')
         else:
             print(array_units[i][0][0])
 
-    #รับหน่วยที่ใช้ ตาราง เมตร,ซม,นิ้ว,กิโลเมตร,วา,ไร่,งาน
-    #unit_input = input("ป้อนหน่วยของคุณ: ")
-    unit_input = "เซนติเมตร"
-    #เเปลงหน่วยไปเป็นเมตรทั้งหมด 
+    name_unit = ''
+    unit_input = input("--> ป้อนหน่วยของคุณ: ")
+
+    # เเปลงหน่วยไปเป็นเมตรทั้งหมด 
     for i in range(len(array_units)):
         if unit_input == array_units[i][0][0]:
-            real_unit = array_units[i][1][0]
-    #print("ค่าจริงของมันคือ ",real_unit)
-    #รับจำนวนด้าน
-    side_many = input("ป้อนจำนวนด้าน:")
+            real_unit = array_units[i][1][0] 
+            name_unit = array_units[i][0][0] 
 
+    # ตรวจสอบว่าป้อนหน่วยที่รองรับหรือไม่
+    if name_unit == '':
+        print("## หน่วยที่คุณป้อนไม่รองรับ ป้อนอีกครั้ง ##")
+        return basic_area()
+    
+    print(f'>>> คุณเลือกหน่วย ตาราง{unit_input}')
+
+    type_shap = ""
     # ฟังชั่นระบุรูปทรง
     def what_shape(side_many):
+        try:
+            side_many = int(input("--> ป้อนจำนวนด้าน: "))
+        except ValueError:
+            print("กรุณาป้อนเป็นตัวเลขจำนวนเต็มเท่านั้น")
+            return what_shape(0)
+    
+        type_shap = ''
+    
         if side_many == 0:
-            print("วงกลม")
+            type_shap = "วงกลม"
         elif side_many == 3:
-            print("สามเหลี่ยม")
+            type_shap = "สามเหลี่ยม"
         elif side_many == 4:
-            print("สี่เหลี่ยม")
+            type_shap = "สี่เหลี่ยม"
         elif side_many == 5:
-            print("ห้าเหลี่ยม")
+            type_shap = "ห้าเหลี่ยม"
         elif side_many == 6:
-            print("หกเหลี่ยม")
-        return f'คุณต้องการหาพื้นที่รูปทรง:'
+            type_shap = "หกเหลี่ยม"
+        elif side_many == 1 or side_many == 2:
+            print("ไม่มีรูปทรงที่มีจำนวนด้านแค่ 1 และ 2 กรอกใหม่อีกครั้ง")
+            return what_shape(0)
+        else:
+            print("รองรับแค่ 0-6 ด้าน กรอกใหม่อีกครั้ง")
+            return what_shape(0)
+
+        print(">>> คุณต้องการหาพื้นที่รูปทรง", type_shap)
+        return type_shap
+    
+    what_shape(0)
+        
+
+#วิธีการใช้งาน + เปิดโปรเเกรม
+print("ยินดีต้อนรับสู่โปรเเกรมหาพื้นที่\nหาพื้นที่เเบบไหนดี?\n1. พิกัดจุด/2. ปกติ")
+
+def start_program():
+    while True:
+        try:
+            type_calculator = int(input("--> ป้อนเลขตัวเลือก: "))
+            if type_calculator == 1:
+                print(">>> คุณเลือกการคำนวณแบบ พิกัดจุด")
+                print("***** ทำงานการคำนวณพิกัดจุด *****")
+                break
+            elif type_calculator == 2:
+                print(">>> คุณเลือกการคำนวณแบบ ทั่วไป")
+                basic_area()
+                break
+            else:
+                print("โปรดป้อนเป็นตัวเลข 1 หรือ 2 เท่านั้น")
+        except ValueError: #ถ้าเออเร่อจะโยนออกมาที่ทันที
+            print("กรุณาป้อนเป็นตัวเลข ไม่ใช่ตัวอักษรหรือสัญลักษณ์")
+
+start_program() #เริ่มทำงานทั้งหมด
