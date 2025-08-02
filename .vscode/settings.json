@@ -1,6 +1,7 @@
 {
   "workbench.colorTheme": "Palenight (Mild Contrast)",
   "editor.fontSize": 25,
+  "terminal.integrated.fontSize": 14,
   "python.languageServer": "Pylance",
   "editor.tokenColorCustomizations": {
     "[Palenight]": {
@@ -13,10 +14,20 @@
             "variable"
           ],
           "settings": {
-            "foreground": "#A3BE8C"
+            "foreground": "#A3BE8C",
           }
         }
       ]
     }
-  }
+  },
+
+  "python.terminal.executeInFileDir": false,
+  "python.experiments.enabled": false,
+  "python.showStartPage": false,
+  "python.defaultInterpreterPath": "/home/codespace/.python/current/bin/python",
+  "python.envFile": "${workspaceFolder}/.env",
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": false,
+  "python.linting.enabled": false,
+  "code-runner.runInTerminal": false
 }
