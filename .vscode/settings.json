@@ -1,6 +1,7 @@
 {
+  "terminal.integrated.fontFamily": "Consolas, 'Courier New', 'Noto Sans Thai UI', 'Tahoma'",
   "workbench.colorTheme": "Palenight (Mild Contrast)",
-  "editor.fontSize": 25,
+  "editor.fontSize": 30,
   "terminal.integrated.fontSize": 14,
   "python.languageServer": "Pylance",
   "editor.tokenColorCustomizations": {
@@ -30,4 +31,5 @@
   "python.testing.pytestEnabled": false,
   "python.linting.enabled": false,
   "code-runner.runInTerminal": false
+  
 }
