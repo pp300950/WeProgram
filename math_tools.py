@@ -10,6 +10,73 @@ array_units = [
     ['กิโลเมตร', 1000.0]
 ]
 
+#การคำนวณประเภทพิกัดจุด ด้วยคู่อันดับ
+def plot_polygon_simple(vertices,unit):
+    x_coords = [] # สร้างลิสต์ว่างสำหรับเก็บพิกัด X
+    y_coords = [] # สร้างลิสต์ว่างสำหรับเก็บพิกัด Y
+
+    # วนลูปผ่านแต่ละจุดยอดในลิสต์ vertices
+    #เช่น [[1,2], [3,4], [5,6]]
+    #          v     v+1   v+2
+    # v[1,2]  -->  v[0] = 1
+
+    for v in vertices: #ลูปเเยกอาเรย์ของเเกน X = 1,3,5 | Y = 2,4,6
+        x_coords.append(v[0])
+        y_coords.append(v[1]) # เพิ่มพิกัด Y ของจุดยอดปัจจุบันเข้าไปใน y_coords
+
+    # เพิ่มพิกัดของจุดยอดแรกเข้าไปในลิสต์เป็นตัวสุดท้าย เพื่อให้รูปปิด
+    # vertices = [(1, 2), (4, 2), (3, 5), (1, 4)]
+    # vertices[2] = (3,5)
+    # vertices[2][1] = 5
+
+    # ( 1,2 )
+    x_coords.append(vertices[0][0]) # (index,X ตัวเเรก) => 1
+    y_coords.append(vertices[0][1]) # (index,Y ตัวเเรก) => 2
+
+    # วนลูปเพื่อคำนวณผลรวมของการคูณลงและคูณขึ้น
+
+    sum_down = 0  # ผลรวมของการคูณลง
+    sum_up = 0    # ผลรวมของการคูณขึ้น
+
+    num_vertices = len(vertices) # เก็บจำนวนจุดยอดไว้ในตัวแปรเพื่อความสะดวก
+
+    for i in range(len(vertices)):
+        # กำหนดดัชนีของจุดยอดถัดไป
+        next_i = i + 1
+
+        # ถ้า next_i เกินขอบเขตของลิสต์ (คือถึงจุดสุดท้ายแล้ว)
+        # ให้วนกลับไปใช้จุดยอดแรกสุด (ดัชนี 0)
+        if next_i == num_vertices:
+            next_i = 0
+
+        # การคูณลง: x_i * y_{i+1}
+        sum_down += vertices[i][0] * vertices[next_i][1]
+
+        # การคูณขึ้น: y_i * x_{i+1}
+        sum_up += vertices[i][1] * vertices[next_i][0]
+
+    area = 0.5 * abs(sum_down - sum_up)
+    print(f"พท.รูปหลายเหลี่ยม = {area:.2f} ตาราง{unit}")
+
+    # วาดรูปหลายเหลี่ยม
+    plt.plot(x_coords, y_coords, 'o-')
+
+    # เพิ่ม label ให้กับจุดยอด
+    # vertices = [(1,2),(4,5),(6,7)]
+    # enumerate(vertices) = (1,2) = เเล้วเอาไปยัดลง (x,y)
+    # ควรทราบว่า คำสั่งมันส่งค่าออกเเบบนี้
+    # (index, (x_coord, y_coord))
+    for i, (x, y) in enumerate(vertices):
+        plt.text(x + 0.1, y + 0.1, f'({x},{y})', fontsize=10, color='red')
+
+    # กำหนดชื่อกราฟ แสดงพื้นที่ และตั้งค่าแกน
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.grid(True)
+    plt.show()
+    return area
+
+
 def convert_unit_to_english(unit_th, array_units):
     """แปลงชื่อหน่วยวัดจากภาษาไทยเป็นอังกิด
     พารมิเต้อ
